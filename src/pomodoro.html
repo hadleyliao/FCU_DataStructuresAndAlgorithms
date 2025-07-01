@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro</title>
+  <style>
+    body{font-family:sans-serif;text-align:center;margin-top:50px}
+    input,button{font-size:20px;margin:10px}
+    #time{font-size:48px;margin-top:20px}
+  </style>
+</head>
+<body>
+<h1>番茄鐘</h1>
+<input id="min" type="number" placeholder="分鐘" min="1" value="25">
+<button onclick="start()">開始</button>
+<div id="time">00:00</div>
+<audio id="alarm" loop>
+  <source src="https://freesound.org/data/previews/337/337049_3232293-lq.mp3" type="audio/mpeg">
+</audio>
+<script>
+  let t,i,a=document.getElementById("alarm")
+  function start(){
+   clearInterval(i)
+   let m=parseInt(document.getElementById("min").value)||25
+   t=m*60
+   tick()
+   i=setInterval(tick,1000)
+  }
+  function tick(){
+   let m=Math.floor(t/60),s=t%60
+   document.getElementById("time").textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`
+   if(t<=0){a.play()}else{t--}
+  }
+</script>
+</body>
+</html>

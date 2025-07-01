@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>美少女戰士圖片展示</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>🌙 美少女戰士圖片集 ✨</h1>
+    <div class="image-display" id="imageDisplay">
+        <span id="noImageText">顯示圖片區域</span>
+    </div>
+    <div class="controls">
+        <button onclick="prevImage()">上一張</button>
+        <button onclick="chooseImages()">選取圖片所在目錄</button>
+        <button onclick="nextImage()">下一張</button>
+    </div>
+    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+</div>
+
+<script src="script.js"></scr
