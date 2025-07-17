@@ -152,7 +152,8 @@ public class SparseMatrixGUI extends JFrame {
         resultLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultScroll, BorderLayout.CENTER);
-        // 將結果區加到主畫面最下方
+        // 讓結果區與其他區塊一樣大
+        resultPanel.setPreferredSize(new Dimension(0, getHeight() / 4));
         add(resultPanel, BorderLayout.SOUTH);
 
         // Action listeners
@@ -349,7 +350,12 @@ public class SparseMatrixGUI extends JFrame {
             }
             sb.append("\n");
         }
-        resultTextArea.setText(sb.toString()); // 在結果區顯示
+        resultTextArea.setText(sb.toString());
+        resultTextArea.setCaretPosition(0); // 自動捲到最上方
+        resultTextArea.revalidate(); // 重新布局
+        resultTextArea.repaint();    // 重新繪製
+        resultTextArea.getParent().revalidate(); // 重新布局父元件
+        resultTextArea.getParent().repaint();    // 重新繪製父元件
     }
 
     public static void main(String[] args) {
