@@ -12,10 +12,13 @@ public class SparseMatrixGUI extends JFrame {
     private JButton showSparseButton;
     private JButton generateSecondButton;
     private JButton showSparseButton2;
+    private JButton addButton;
+    private JButton subButton;
     private JTable matrixTable;
     private JTable matrixTable2;
     private JTextArea sparseTextArea;
     private JTextArea sparseTextArea2;
+    private JTextArea resultTextArea; // 新增結果顯示區
     private int[][] lastMatrix;
     private int[][] lastMatrix2;
 
@@ -67,6 +70,14 @@ public class SparseMatrixGUI extends JFrame {
         showSparseButton2 = new JButton("顯示第2個稀疏矩陣");
         showSparseButton2.setPreferredSize(new Dimension(200, 28));
         topPanel.add(showSparseButton2, gbc);
+
+        // 在 topPanel 下方新增加減按鈕
+        addButton = new JButton("矩陣相加");
+        subButton = new JButton("矩陣相減");
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
+        topPanel.add(addButton, gbc);
+        gbc.gridx = 2; gbc.gridwidth = 2;
+        topPanel.add(subButton, gbc);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -130,6 +141,20 @@ public class SparseMatrixGUI extends JFrame {
 
         add(centerPanel, BorderLayout.CENTER);
 
+        // 結果顯示區
+        resultTextArea = new JTextArea();
+        resultTextArea.setEditable(false);
+        resultTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        resultTextArea.setForeground(Color.BLUE);
+        JScrollPane resultScroll = new JScrollPane(resultTextArea);
+        JPanel resultPanel = new JPanel(new BorderLayout());
+        JLabel resultLabel = new JLabel("運算結果", SwingConstants.CENTER);
+        resultLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        resultPanel.add(resultLabel, BorderLayout.NORTH);
+        resultPanel.add(resultScroll, BorderLayout.CENTER);
+        // 將結果區加到主畫面最下方
+        add(resultPanel, BorderLayout.SOUTH);
+
         // Action listeners
         generateButton.addActionListener(e -> {
             generateMatrix();
@@ -143,6 +168,8 @@ public class SparseMatrixGUI extends JFrame {
         showSparseButton2.addActionListener(e -> {
             showSparseMatrix2();
         });
+        addButton.addActionListener(e -> addMatrices());
+        subButton.addActionListener(e -> subMatrices());
     }
 
     private void generateMatrix() {
@@ -273,6 +300,56 @@ public class SparseMatrixGUI extends JFrame {
             }
         }
         sparseTextArea2.setText(sb.toString());
+    }
+
+    private void addMatrices() {
+        if (lastMatrix == null || lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生兩個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (lastMatrix.length != lastMatrix2.length || lastMatrix[0].length != lastMatrix2[0].length) {
+            JOptionPane.showMessageDialog(this, "兩個矩陣大小不一致，無法相加", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int n = lastMatrix.length;
+        int[][] result = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = lastMatrix[i][j] + lastMatrix2[i][j];
+            }
+        }
+        showResultMatrix(result, "相加結果");
+    }
+
+    private void subMatrices() {
+        if (lastMatrix == null || lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生兩個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (lastMatrix.length != lastMatrix2.length || lastMatrix[0].length != lastMatrix2[0].length) {
+            JOptionPane.showMessageDialog(this, "兩個矩陣大小不一致，無法相減", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int n = lastMatrix.length;
+        int[][] result = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = lastMatrix[i][j] - lastMatrix2[i][j];
+            }
+        }
+        showResultMatrix(result, "相減結果");
+    }
+
+    private void showResultMatrix(int[][] matrix, String title) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(title).append("\n");
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                sb.append(matrix[i][j]).append("\t");
+            }
+            sb.append("\n");
+        }
+        resultTextArea.setText(sb.toString()); // 在結果區顯示
     }
 
     public static void main(String[] args) {
