@@ -223,8 +223,8 @@ public class SparseMatrixGUI extends JFrame {
         double density;
         try {
             n = Integer.parseInt(sizeField.getText());
-            if (n <= 0 || n > 100) {
-                JOptionPane.showMessageDialog(this, "請輸入 1~100 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
+            if (n <= 0 || n > 3000) { // 修改上限為3000
+                JOptionPane.showMessageDialog(this, "請輸入 1~3000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             density = Double.parseDouble(densityField.getText());
@@ -279,8 +279,8 @@ public class SparseMatrixGUI extends JFrame {
         double density;
         try {
             n = Integer.parseInt(sizeField.getText());
-            if (n <= 0 || n > 100) {
-                JOptionPane.showMessageDialog(this, "請輸入 1~100 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
+            if (n <= 0 || n > 3000) { // 修改上限為3000
+                JOptionPane.showMessageDialog(this, "請輸入 1~3000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             density = Double.parseDouble(densityField.getText());
@@ -437,6 +437,7 @@ public class SparseMatrixGUI extends JFrame {
             transTerms[pos][2] = terms[i][2];
             startPos[col]++;
         }
+        long end = System.nanoTime(); // 將計時移到這裡，僅計算轉置
         // 轉回矩陣
         transposedMatrix = new int[n][n];
         for (int i = 0; i < t; i++) {
@@ -445,9 +446,8 @@ public class SparseMatrixGUI extends JFrame {
             int val = transTerms[i][2];
             transposedMatrix[row][col] = val;
         }
-        long end = System.nanoTime();
         showTransposedMatrix();
-        timeLabel.setText("快速矩陣轉置執行時間: " + (end - start)/1_000_000.0 + " ms");
+        timeLabel.setText("快速矩陣轉置執行時間: " + String.format("%,d", (end - start)) + " ns");
     }
     // 顯示轉置結果
     private void showTransposedMatrix() {
@@ -484,7 +484,7 @@ public class SparseMatrixGUI extends JFrame {
         }
         long end = System.nanoTime();
         showResultMatrix(trans, "矩陣 No.2 原始矩陣轉置(Naive Transpose)結果 🔄");
-        timeLabel.setText("原始矩陣轉置執行時間: " + (end - start)/1_000_000.0 + " ms");
+        timeLabel.setText("原始矩陣轉置執行時間: " + String.format("%,d", (end - start)) + " ns");
     }
 
     private void showResultMatrix(int[][] matrix, String title) {
