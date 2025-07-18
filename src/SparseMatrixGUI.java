@@ -14,6 +14,7 @@ public class SparseMatrixGUI extends JFrame {
     private JButton showSparseButton2;
     private JButton addButton;
     private JButton subButton;
+    private JButton transposeButton; // 新增轉置按鈕
     private JTable matrixTable;
     private JTable matrixTable2;
     private JTextArea sparseTextArea;
@@ -21,6 +22,7 @@ public class SparseMatrixGUI extends JFrame {
     private JTextArea resultTextArea; // 新增結果顯示區
     private int[][] lastMatrix;
     private int[][] lastMatrix2;
+    private int[][] transposedMatrix; // 儲存轉置結果
     private JLabel messageLabel; // 新增訊息標籤
 
     public SparseMatrixGUI() {
@@ -86,6 +88,12 @@ public class SparseMatrixGUI extends JFrame {
         topPanel.add(addButton, gbc);
         gbc.gridx = 2; gbc.gridwidth = 2;
         topPanel.add(subButton, gbc);
+
+        // Transpose button
+        transposeButton = new JButton("矩陣 No.2 快速轉置 🔄");
+        transposeButton.setPreferredSize(new Dimension(200, 28));
+        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 4;
+        topPanel.add(transposeButton, gbc);
 
         add(topPanel, BorderLayout.PAGE_START);
 
@@ -185,6 +193,7 @@ public class SparseMatrixGUI extends JFrame {
         });
         addButton.addActionListener(e -> addMatrices());
         subButton.addActionListener(e -> subMatrices());
+        transposeButton.addActionListener(e -> fastTransposeMatrix2());
     }
 
     private void generateMatrix() {
@@ -359,6 +368,79 @@ public class SparseMatrixGUI extends JFrame {
             }
         }
         showResultMatrix(result, "相減結果 ➖");
+    }
+
+    // 快速轉置方法
+    private void fastTransposeMatrix2() {
+        if (lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生第二個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int n = lastMatrix2.length;
+        int t = 0;
+        // 計算非零元素個數
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (lastMatrix2[i][j] != 0) t++;
+        // 建立三元組陣列
+        int[][] terms = new int[t][3];
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (lastMatrix2[i][j] != 0) {
+                    terms[idx][0] = i;
+                    terms[idx][1] = j;
+                    terms[idx][2] = lastMatrix2[i][j];
+                    idx++;
+                }
+            }
+        }
+        // 快速轉置
+        int[] colCount = new int[n];
+        for (int i = 0; i < t; i++) {
+            colCount[terms[i][1]]++;
+        }
+        int[] startPos = new int[n];
+        startPos[0] = 0;
+        for (int i = 1; i < n; i++) {
+            startPos[i] = startPos[i - 1] + colCount[i - 1];
+        }
+        int[][] transTerms = new int[t][3];
+        for (int i = 0; i < t; i++) {
+            int col = terms[i][1];
+            int pos = startPos[col];
+            transTerms[pos][0] = terms[i][1]; // row <-> col
+            transTerms[pos][1] = terms[i][0];
+            transTerms[pos][2] = terms[i][2];
+            startPos[col]++;
+        }
+        // 轉回矩陣
+        transposedMatrix = new int[n][n];
+        for (int i = 0; i < t; i++) {
+            int row = transTerms[i][0];
+            int col = transTerms[i][1];
+            int val = transTerms[i][2];
+            transposedMatrix[row][col] = val;
+        }
+        showTransposedMatrix();
+    }
+    // 顯示轉置結果
+    private void showTransposedMatrix() {
+        if (transposedMatrix == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("矩陣 No.2 快速轉置結果 🔄\n");
+        for (int i = 0; i < transposedMatrix.length; i++) {
+            for (int j = 0; j < transposedMatrix[i].length; j++) {
+                sb.append(transposedMatrix[i][j]).append("\t");
+            }
+            sb.append("\n");
+        }
+        resultTextArea.setText(sb.toString());
+        resultTextArea.setCaretPosition(0);
+        resultTextArea.revalidate();
+        resultTextArea.repaint();
+        resultTextArea.getParent().revalidate();
+        resultTextArea.getParent().repaint();
     }
 
     private void showResultMatrix(int[][] matrix, String title) {
