@@ -15,6 +15,7 @@ public class SparseMatrixGUI extends JFrame {
     private JButton addButton;
     private JButton subButton;
     private JButton transposeButton; // 新增轉置按鈕
+    private JButton transposeOriginButton; // 新增原始矩陣轉置按鈕
     private JTable matrixTable;
     private JTable matrixTable2;
     private JTextArea sparseTextArea;
@@ -24,6 +25,7 @@ public class SparseMatrixGUI extends JFrame {
     private int[][] lastMatrix2;
     private int[][] transposedMatrix; // 儲存轉置結果
     private JLabel messageLabel; // 新增訊息標籤
+    private JLabel timeLabel; // 顯示執行時間
 
     public SparseMatrixGUI() {
         setTitle("Sparse Matrix Generator");
@@ -90,10 +92,16 @@ public class SparseMatrixGUI extends JFrame {
         topPanel.add(subButton, gbc);
 
         // Transpose button
-        transposeButton = new JButton("矩陣 No.2 快速轉置 🔄");
-        transposeButton.setPreferredSize(new Dimension(200, 28));
+        transposeButton = new JButton("矩陣 No.2 快速矩陣轉置(Fast Transpose) ??");
+        transposeButton.setPreferredSize(new Dimension(300, 28));
         gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 4;
         topPanel.add(transposeButton, gbc);
+
+        // 新增原始矩陣轉置按鈕
+        transposeOriginButton = new JButton("矩陣 No.2 原始矩陣轉置(Naive Transpose) 🔄");
+        transposeOriginButton.setPreferredSize(new Dimension(300, 28));
+        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 4;
+        topPanel.add(transposeOriginButton, gbc);
 
         add(topPanel, BorderLayout.PAGE_START);
 
@@ -175,6 +183,11 @@ public class SparseMatrixGUI extends JFrame {
         resultPanel.add(resultScroll, BorderLayout.CENTER);
         // 讓結果區與其他區塊一樣大
         resultPanel.setPreferredSize(new Dimension(0, getHeight() / 4));
+        // 新增時間顯示區
+        timeLabel = new JLabel(" ", SwingConstants.CENTER);
+        timeLabel.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        timeLabel.setForeground(Color.DARK_GRAY);
+        resultPanel.add(timeLabel, BorderLayout.SOUTH);
         add(resultPanel, BorderLayout.SOUTH);
 
 
@@ -194,6 +207,7 @@ public class SparseMatrixGUI extends JFrame {
         addButton.addActionListener(e -> addMatrices());
         subButton.addActionListener(e -> subMatrices());
         transposeButton.addActionListener(e -> fastTransposeMatrix2());
+        transposeOriginButton.addActionListener(e -> originTransposeMatrix2());
     }
 
     private void generateMatrix() {
@@ -376,6 +390,7 @@ public class SparseMatrixGUI extends JFrame {
             JOptionPane.showMessageDialog(this, "請先產生第二個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        long start = System.nanoTime();
         int n = lastMatrix2.length;
         int t = 0;
         // 計算非零元素個數
@@ -422,13 +437,15 @@ public class SparseMatrixGUI extends JFrame {
             int val = transTerms[i][2];
             transposedMatrix[row][col] = val;
         }
+        long end = System.nanoTime();
         showTransposedMatrix();
+        timeLabel.setText("快速矩陣轉置執行時間: " + (end - start)/1_000_000.0 + " ms");
     }
     // 顯示轉置結果
     private void showTransposedMatrix() {
         if (transposedMatrix == null) return;
         StringBuilder sb = new StringBuilder();
-        sb.append("矩陣 No.2 快速轉置結果 🔄\n");
+        sb.append("矩陣 No.2 快速矩陣轉置(Fast Transpose) 🔄\n");
         for (int i = 0; i < transposedMatrix.length; i++) {
             for (int j = 0; j < transposedMatrix[i].length; j++) {
                 sb.append(transposedMatrix[i][j]).append("\t");
@@ -441,6 +458,25 @@ public class SparseMatrixGUI extends JFrame {
         resultTextArea.repaint();
         resultTextArea.getParent().revalidate();
         resultTextArea.getParent().repaint();
+    }
+
+    // 原始二維陣列轉置方法
+    private void originTransposeMatrix2() {
+        if (lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生第二個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        long start = System.nanoTime();
+        int n = lastMatrix2.length;
+        int[][] trans = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                trans[j][i] = lastMatrix2[i][j];
+            }
+        }
+        long end = System.nanoTime();
+        showResultMatrix(trans, "矩陣 No.2 原始轉置結果");
+        timeLabel.setText("原始矩陣轉置執行時間: " + (end - start)/1_000_000.0 + " ms");
     }
 
     private void showResultMatrix(int[][] matrix, String title) {
