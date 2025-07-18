@@ -21,6 +21,7 @@ public class SparseMatrixGUI extends JFrame {
     private JTextArea resultTextArea; // 新增結果顯示區
     private int[][] lastMatrix;
     private int[][] lastMatrix2;
+    private JLabel messageLabel; // 新增訊息標籤
 
     public SparseMatrixGUI() {
         setTitle("Sparse Matrix Generator");
@@ -28,6 +29,13 @@ public class SparseMatrixGUI extends JFrame {
         setSize(1000, 1000);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        // Message label for errors or info
+        messageLabel = new JLabel(" ", SwingConstants.CENTER);
+        messageLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 16));
+        messageLabel.setForeground(Color.RED);
+        messageLabel.setPreferredSize(new Dimension(600, 30));
+        add(messageLabel, BorderLayout.NORTH);
 
         // Top input & operation panel
         JPanel topPanel = new JPanel();
@@ -79,7 +87,7 @@ public class SparseMatrixGUI extends JFrame {
         gbc.gridx = 2; gbc.gridwidth = 2;
         topPanel.add(subButton, gbc);
 
-        add(topPanel, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.PAGE_START);
 
         // Center: Matrix Table area with labels
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 2, 2));
@@ -160,6 +168,7 @@ public class SparseMatrixGUI extends JFrame {
         // 讓結果區與其他區塊一樣大
         resultPanel.setPreferredSize(new Dimension(0, getHeight() / 4));
         add(resultPanel, BorderLayout.SOUTH);
+
 
         // Action listeners
         generateButton.addActionListener(e -> {
@@ -314,8 +323,11 @@ public class SparseMatrixGUI extends JFrame {
             return;
         }
         if (lastMatrix.length != lastMatrix2.length || lastMatrix[0].length != lastMatrix2[0].length) {
-            JOptionPane.showMessageDialog(this, "兩個矩陣大小不一致，無法相加", "錯誤", JOptionPane.ERROR_MESSAGE);
+            messageLabel.setText("兩個矩陣大小不同，無法做運算！");
+            JOptionPane.showMessageDialog(this, "兩個矩陣大小不同，無法做運算！", "錯誤", JOptionPane.ERROR_MESSAGE);
             return;
+        } else {
+            messageLabel.setText("");
         }
         int n = lastMatrix.length;
         int[][] result = new int[n][n];
@@ -333,8 +345,11 @@ public class SparseMatrixGUI extends JFrame {
             return;
         }
         if (lastMatrix.length != lastMatrix2.length || lastMatrix[0].length != lastMatrix2[0].length) {
-            JOptionPane.showMessageDialog(this, "兩個矩陣大小不一致，無法相減", "錯誤", JOptionPane.ERROR_MESSAGE);
+            messageLabel.setText("兩個矩陣大小不同，無法做運算！");
+            JOptionPane.showMessageDialog(this, "兩個矩陣大小不同，無法做運算！", "錯誤", JOptionPane.ERROR_MESSAGE);
             return;
+        } else {
+            messageLabel.setText("");
         }
         int n = lastMatrix.length;
         int[][] result = new int[n][n];
