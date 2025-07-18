@@ -92,7 +92,7 @@ public class SparseMatrixGUI extends JFrame {
         topPanel.add(subButton, gbc);
 
         // Transpose button
-        transposeButton = new JButton("矩陣 No.2 快速矩陣轉置(Fast Transpose) ??");
+        transposeButton = new JButton("矩陣 No.2 快速矩陣轉置(Fast Transpose) 🔄");
         transposeButton.setPreferredSize(new Dimension(300, 28));
         gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 4;
         topPanel.add(transposeButton, gbc);
@@ -103,12 +103,18 @@ public class SparseMatrixGUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 4;
         topPanel.add(transposeOriginButton, gbc);
 
+        // 增加空白區域讓按鈕與下方區域明顯隔開
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 4;
+        gbc.insets = new Insets(30, 0, 10, 0); // 上方多留空間
+        topPanel.add(Box.createVerticalStrut(20), gbc);
+        gbc.insets = new Insets(10, 35, 10, 35); // 恢復原本insets
+
         add(topPanel, BorderLayout.PAGE_START);
 
         // Center: Matrix Table area with labels
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 2, 2));
         // Matrix title label font/color
-        Font matrixLabelFont = new Font("SansSerif", Font.BOLD, 18);
+        Font matrixLabelFont = new Font("Microsoft JhengHei", Font.BOLD, 18);
         Color matrixLabelColor = new Color(255, 140, 0);
 
         // Matrix 1
@@ -120,6 +126,7 @@ public class SparseMatrixGUI extends JFrame {
         matrixTable = new JTable();
         matrixTable.setEnabled(false);
         matrixTable.setForeground(new Color(255, 140, 0)); // 內容與標題同色（橘色）
+        matrixTable.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         JScrollPane mat1Scroll = new JScrollPane(matrixTable);
         mat1Panel.add(mat1Scroll, BorderLayout.CENTER);
         centerPanel.add(mat1Panel);
@@ -133,6 +140,7 @@ public class SparseMatrixGUI extends JFrame {
         matrixTable2 = new JTable();
         matrixTable2.setEnabled(false);
         matrixTable2.setForeground(new Color(255, 140, 0)); // 內容與標題同色（橘色）
+        matrixTable2.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         JScrollPane mat2Scroll = new JScrollPane(matrixTable2);
         mat2Panel.add(mat2Scroll, BorderLayout.CENTER);
         centerPanel.add(mat2Panel);
@@ -141,12 +149,12 @@ public class SparseMatrixGUI extends JFrame {
         JPanel sparseLabelPanel1 = new JPanel(new BorderLayout());
         JLabel sparse1Label = new JLabel("較省空間顯示稀疏矩陣 No.1", SwingConstants.CENTER);
         sparse1Label.setForeground(new Color(34, 139, 34));
-        sparse1Label.setFont(new Font("SansSerif", Font.BOLD, 18));
+        sparse1Label.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
         sparseLabelPanel1.add(sparse1Label, BorderLayout.NORTH);
 
         sparseTextArea = new JTextArea();
         sparseTextArea.setEditable(false);
-        sparseTextArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        sparseTextArea.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         sparseTextArea.setForeground(new Color(34, 139, 34)); // 內容與標題同色
         JScrollPane sparseScroll1 = new JScrollPane(sparseTextArea);
         sparseLabelPanel1.add(sparseScroll1, BorderLayout.CENTER);
@@ -156,12 +164,12 @@ public class SparseMatrixGUI extends JFrame {
         JPanel sparseLabelPanel2 = new JPanel(new BorderLayout());
         JLabel sparse2Label = new JLabel("較省空間顯示稀疏矩陣 No.2", SwingConstants.CENTER);
         sparse2Label.setForeground(new Color(34, 139, 34));
-        sparse2Label.setFont(new Font("SansSerif", Font.BOLD, 18));
+        sparse2Label.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
         sparseLabelPanel2.add(sparse2Label, BorderLayout.NORTH);
 
         sparseTextArea2 = new JTextArea();
         sparseTextArea2.setEditable(false);
-        sparseTextArea2.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        sparseTextArea2.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         sparseTextArea2.setForeground(new Color(34, 139, 34)); // 內容與標題同色
         JScrollPane sparseScroll2 = new JScrollPane(sparseTextArea2);
         sparseLabelPanel2.add(sparseScroll2, BorderLayout.CENTER);
@@ -177,7 +185,7 @@ public class SparseMatrixGUI extends JFrame {
         JScrollPane resultScroll = new JScrollPane(resultTextArea);
         JPanel resultPanel = new JPanel(new BorderLayout());
         JLabel resultLabel = new JLabel("運算結果", SwingConstants.CENTER);
-        resultLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        resultLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
         resultLabel.setForeground(Color.BLUE); // 設定標題為藍色
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultScroll, BorderLayout.CENTER);
@@ -185,7 +193,7 @@ public class SparseMatrixGUI extends JFrame {
         resultPanel.setPreferredSize(new Dimension(0, getHeight() / 4));
         // 新增時間顯示區
         timeLabel = new JLabel(" ", SwingConstants.CENTER);
-        timeLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 16));
+        timeLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
         timeLabel.setForeground(new Color(220, 20, 60)); // 醒目的紅色
         resultPanel.add(timeLabel, BorderLayout.SOUTH);
         add(resultPanel, BorderLayout.SOUTH);
@@ -445,7 +453,7 @@ public class SparseMatrixGUI extends JFrame {
     private void showTransposedMatrix() {
         if (transposedMatrix == null) return;
         StringBuilder sb = new StringBuilder();
-        sb.append("矩陣 No.2 快速矩陣轉置(Fast Transpose) 🔄\n");
+        sb.append("矩陣 No.2 快速矩陣轉置(Fast Transpose)結果 🔄\n");
         for (int i = 0; i < transposedMatrix.length; i++) {
             for (int j = 0; j < transposedMatrix[i].length; j++) {
                 sb.append(transposedMatrix[i][j]).append("\t");
@@ -475,7 +483,7 @@ public class SparseMatrixGUI extends JFrame {
             }
         }
         long end = System.nanoTime();
-        showResultMatrix(trans, "矩陣 No.2 原始轉置結果");
+        showResultMatrix(trans, "矩陣 No.2 原始矩陣轉置(Naive Transpose)結果 🔄");
         timeLabel.setText("原始矩陣轉置執行時間: " + (end - start)/1_000_000.0 + " ms");
     }
 
