@@ -25,7 +25,7 @@ public class SparseMatrixGUI extends JFrame {
     public SparseMatrixGUI() {
         setTitle("Sparse Matrix Generator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 800);
+        setSize(1000, 1000);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -33,47 +33,47 @@ public class SparseMatrixGUI extends JFrame {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(3, 10, 3, 10);
+        gbc.insets = new Insets(10, 35, 10, 35);
 
         // Matrix size input
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
-        topPanel.add(new JLabel("Enter matrix size (n):"), gbc);
+        topPanel.add(new JLabel("矩陣大小(n*n):"), gbc);
         sizeField = new JTextField(5);
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
         topPanel.add(sizeField, gbc);
 
         // Density input
         gbc.gridx = 2; gbc.anchor = GridBagConstraints.EAST;
-        topPanel.add(new JLabel("Enter density(0~1):"), gbc);
-        densityField = new JTextField("0.1", 5);
+        topPanel.add(new JLabel("密集度百分比(0~1):"), gbc);
+        densityField = new JTextField("0.1", 4);
         gbc.gridx = 3; gbc.anchor = GridBagConstraints.WEST;
         topPanel.add(densityField, gbc);
 
         // Buttons on next row
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
-        generateButton = new JButton("Generate Sparse Matrix No.1");
+        generateButton = new JButton("產生稀疏矩陣 No.1");
         generateButton.setPreferredSize(new Dimension(200, 28));
         topPanel.add(generateButton, gbc);
 
         gbc.gridx = 2; gbc.gridwidth = 2;
-        generateSecondButton = new JButton("Generate Sparse Matrix No.2");
+        generateSecondButton = new JButton("產生稀疏矩陣 No.2");
         generateSecondButton.setPreferredSize(new Dimension(200, 28));
         topPanel.add(generateSecondButton, gbc);
 
         // Show sparse matrix buttons
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
-        showSparseButton = new JButton("顯示第1個稀疏矩陣");
+        showSparseButton = new JButton("較省空間顯示稀疏矩陣 No.1");
         showSparseButton.setPreferredSize(new Dimension(200, 28));
         topPanel.add(showSparseButton, gbc);
 
         gbc.gridx = 2; gbc.gridwidth = 2;
-        showSparseButton2 = new JButton("顯示第2個稀疏矩陣");
+        showSparseButton2 = new JButton("較省空間顯示稀疏矩陣 No.2");
         showSparseButton2.setPreferredSize(new Dimension(200, 28));
         topPanel.add(showSparseButton2, gbc);
 
         // 在 topPanel 下方新增加減按鈕
-        addButton = new JButton("矩陣相加");
-        subButton = new JButton("矩陣相減");
+        addButton = new JButton("矩陣相加 ➕");
+        subButton = new JButton("矩陣相減 ➖");
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         topPanel.add(addButton, gbc);
         gbc.gridx = 2; gbc.gridwidth = 2;
@@ -84,57 +84,61 @@ public class SparseMatrixGUI extends JFrame {
         // Center: Matrix Table area with labels
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 2, 2));
         // Matrix title label font/color
-        Font matrixLabelFont = new Font("SansSerif", Font.BOLD, 20);
+        Font matrixLabelFont = new Font("SansSerif", Font.BOLD, 18);
         Color matrixLabelColor = new Color(255, 140, 0);
 
         // Matrix 1
         JPanel mat1Panel = new JPanel(new BorderLayout());
-        JLabel mat1Label = new JLabel("Generate Sparse Matrix No.1", SwingConstants.CENTER);
+        JLabel mat1Label = new JLabel("產生稀疏矩陣 No.1", SwingConstants.CENTER);
         mat1Label.setFont(matrixLabelFont);
         mat1Label.setForeground(matrixLabelColor);
         mat1Panel.add(mat1Label, BorderLayout.NORTH);
         matrixTable = new JTable();
         matrixTable.setEnabled(false);
+        matrixTable.setForeground(new Color(255, 140, 0)); // 內容與標題同色（橘色）
         JScrollPane mat1Scroll = new JScrollPane(matrixTable);
         mat1Panel.add(mat1Scroll, BorderLayout.CENTER);
         centerPanel.add(mat1Panel);
 
         // Matrix 2
         JPanel mat2Panel = new JPanel(new BorderLayout());
-        JLabel mat2Label = new JLabel("Generate Sparse Matrix No.2", SwingConstants.CENTER);
+        JLabel mat2Label = new JLabel("產生稀疏矩陣 No.2", SwingConstants.CENTER);
         mat2Label.setFont(matrixLabelFont);
         mat2Label.setForeground(matrixLabelColor);
         mat2Panel.add(mat2Label, BorderLayout.NORTH);
         matrixTable2 = new JTable();
         matrixTable2.setEnabled(false);
+        matrixTable2.setForeground(new Color(255, 140, 0)); // 內容與標題同色（橘色）
         JScrollPane mat2Scroll = new JScrollPane(matrixTable2);
         mat2Panel.add(mat2Scroll, BorderLayout.CENTER);
         centerPanel.add(mat2Panel);
 
         // Sparse 1 Label
         JPanel sparseLabelPanel1 = new JPanel(new BorderLayout());
-        JLabel sparse1Label = new JLabel("顯示第1個稀疏矩陣", SwingConstants.CENTER);
+        JLabel sparse1Label = new JLabel("較省空間顯示稀疏矩陣 No.1", SwingConstants.CENTER);
         sparse1Label.setForeground(new Color(34, 139, 34));
-        sparse1Label.setFont(new Font("SansSerif", Font.BOLD, 16));
+        sparse1Label.setFont(new Font("SansSerif", Font.BOLD, 18));
         sparseLabelPanel1.add(sparse1Label, BorderLayout.NORTH);
 
         sparseTextArea = new JTextArea();
         sparseTextArea.setEditable(false);
-        sparseTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        sparseTextArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        sparseTextArea.setForeground(new Color(34, 139, 34)); // 內容與標題同色
         JScrollPane sparseScroll1 = new JScrollPane(sparseTextArea);
         sparseLabelPanel1.add(sparseScroll1, BorderLayout.CENTER);
         centerPanel.add(sparseLabelPanel1);
 
         // Sparse 2 Label
         JPanel sparseLabelPanel2 = new JPanel(new BorderLayout());
-        JLabel sparse2Label = new JLabel("顯示第2個稀疏矩陣", SwingConstants.CENTER);
+        JLabel sparse2Label = new JLabel("較省空間顯示稀疏矩陣 No.2", SwingConstants.CENTER);
         sparse2Label.setForeground(new Color(34, 139, 34));
-        sparse2Label.setFont(new Font("SansSerif", Font.BOLD, 16));
+        sparse2Label.setFont(new Font("SansSerif", Font.BOLD, 18));
         sparseLabelPanel2.add(sparse2Label, BorderLayout.NORTH);
 
         sparseTextArea2 = new JTextArea();
         sparseTextArea2.setEditable(false);
-        sparseTextArea2.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        sparseTextArea2.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        sparseTextArea2.setForeground(new Color(34, 139, 34)); // 內容與標題同色
         JScrollPane sparseScroll2 = new JScrollPane(sparseTextArea2);
         sparseLabelPanel2.add(sparseScroll2, BorderLayout.CENTER);
         centerPanel.add(sparseLabelPanel2);
@@ -144,12 +148,13 @@ public class SparseMatrixGUI extends JFrame {
         // 結果顯示區
         resultTextArea = new JTextArea();
         resultTextArea.setEditable(false);
-        resultTextArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
-        resultTextArea.setForeground(Color.BLUE);
+        resultTextArea.setFont(new Font("Monospaced", Font.PLAIN, 15));
+        resultTextArea.setForeground(Color.BLUE); // 設定內容為藍色
         JScrollPane resultScroll = new JScrollPane(resultTextArea);
         JPanel resultPanel = new JPanel(new BorderLayout());
         JLabel resultLabel = new JLabel("運算結果", SwingConstants.CENTER);
-        resultLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        resultLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        resultLabel.setForeground(Color.BLUE); // 設定標題為藍色
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultScroll, BorderLayout.CENTER);
         // 讓結果區與其他區塊一樣大
@@ -319,7 +324,7 @@ public class SparseMatrixGUI extends JFrame {
                 result[i][j] = lastMatrix[i][j] + lastMatrix2[i][j];
             }
         }
-        showResultMatrix(result, "相加結果");
+        showResultMatrix(result, "相加結果 ➕");
     }
 
     private void subMatrices() {
@@ -338,7 +343,7 @@ public class SparseMatrixGUI extends JFrame {
                 result[i][j] = lastMatrix[i][j] - lastMatrix2[i][j];
             }
         }
-        showResultMatrix(result, "相減結果");
+        showResultMatrix(result, "相減結果 ➖");
     }
 
     private void showResultMatrix(int[][] matrix, String title) {
