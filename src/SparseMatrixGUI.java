@@ -185,8 +185,8 @@ public class SparseMatrixGUI extends JFrame {
         resultPanel.setPreferredSize(new Dimension(0, getHeight() / 4));
         // 新增時間顯示區
         timeLabel = new JLabel(" ", SwingConstants.CENTER);
-        timeLabel.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
-        timeLabel.setForeground(Color.DARK_GRAY);
+        timeLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 16));
+        timeLabel.setForeground(new Color(220, 20, 60)); // 醒目的紅色
         resultPanel.add(timeLabel, BorderLayout.SOUTH);
         add(resultPanel, BorderLayout.SOUTH);
 
