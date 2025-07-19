@@ -16,6 +16,8 @@ public class SparseMatrixGUI extends JFrame {
     private JButton subButton;
     private JButton transposeButton; // 新增轉置按鈕
     private JButton transposeOriginButton; // 新增原始矩陣轉置按鈕
+    private JButton fastTransposeAvgButton; // 新增快速轉置平均按鈕
+    private JButton originTransposeAvgButton; // 新增原始轉置平均按鈕
     private JTable matrixTable;
     private JTable matrixTable2;
     private JTextArea sparseTextArea;
@@ -103,8 +105,19 @@ public class SparseMatrixGUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 4;
         topPanel.add(transposeOriginButton, gbc);
 
+        // 新增平均執行時間按鈕
+        fastTransposeAvgButton = new JButton("快速矩陣轉置執行時間10次平均");
+        fastTransposeAvgButton.setPreferredSize(new Dimension(300, 28));
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        topPanel.add(fastTransposeAvgButton, gbc);
+
+        originTransposeAvgButton = new JButton("原始矩陣轉置執行時間10次平均");
+        originTransposeAvgButton.setPreferredSize(new Dimension(300, 28));
+        gbc.gridx = 2; gbc.gridy = 6; gbc.gridwidth = 2;
+        topPanel.add(originTransposeAvgButton, gbc);
+
         // 增加空白區域讓按鈕與下方區域明顯隔開
-        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 4;
+        gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 4;
         gbc.insets = new Insets(30, 0, 10, 0); // 上方多留空間
         topPanel.add(Box.createVerticalStrut(20), gbc);
         gbc.insets = new Insets(10, 35, 10, 35); // 恢復原本insets
@@ -216,6 +229,8 @@ public class SparseMatrixGUI extends JFrame {
         subButton.addActionListener(e -> subMatrices());
         transposeButton.addActionListener(e -> fastTransposeMatrix2());
         transposeOriginButton.addActionListener(e -> originTransposeMatrix2());
+        fastTransposeAvgButton.addActionListener(e -> fastTransposeMatrix2Avg10());
+        originTransposeAvgButton.addActionListener(e -> originTransposeMatrix2Avg10());
     }
 
     private void generateMatrix() {
@@ -223,8 +238,8 @@ public class SparseMatrixGUI extends JFrame {
         double density;
         try {
             n = Integer.parseInt(sizeField.getText());
-            if (n <= 0 || n > 3000) { // 修改上限為3000
-                JOptionPane.showMessageDialog(this, "請輸入 1~3000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
+            if (n <= 0 || n > 2000) { // 修改上限為2000
+                JOptionPane.showMessageDialog(this, "請輸入 1~2000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             density = Double.parseDouble(densityField.getText());
@@ -279,8 +294,8 @@ public class SparseMatrixGUI extends JFrame {
         double density;
         try {
             n = Integer.parseInt(sizeField.getText());
-            if (n <= 0 || n > 3000) { // 修改上限為3000
-                JOptionPane.showMessageDialog(this, "請輸入 1~3000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
+            if (n <= 0 || n > 2000) { // 修改上限為2000
+                JOptionPane.showMessageDialog(this, "請輸入 1~2000 之間的整數", "錯誤", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             density = Double.parseDouble(densityField.getText());
@@ -485,6 +500,81 @@ public class SparseMatrixGUI extends JFrame {
         long end = System.nanoTime();
         showResultMatrix(trans, "矩陣 No.2 原始矩陣轉置(Naive Transpose)結果 🔄");
         timeLabel.setText("原始矩陣轉置執行時間: " + String.format("%,d", (end - start)) + " ns");
+    }
+
+    // ===== 新增：快速矩陣轉置10次平均 =====
+    private void fastTransposeMatrix2Avg10() {
+        if (lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生第二個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int n = lastMatrix2.length;
+        int t = 0;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (lastMatrix2[i][j] != 0) t++;
+        int[][] terms = new int[t][3];
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (lastMatrix2[i][j] != 0) {
+                    terms[idx][0] = i;
+                    terms[idx][1] = j;
+                    terms[idx][2] = lastMatrix2[i][j];
+                    idx++;
+                }
+            }
+        }
+        long total = 0;
+        for (int run = 0; run < 10; run++) {
+            // 重新計算 startPos
+            int[] colCount = new int[n];
+            for (int i = 0; i < t; i++) {
+                colCount[terms[i][1]]++;
+            }
+            int[] startPos = new int[n];
+            startPos[0] = 0;
+            for (int i = 1; i < n; i++) {
+                startPos[i] = startPos[i - 1] + colCount[i - 1];
+            }
+            int[][] transTerms = new int[t][3];
+            long start = System.nanoTime();
+            for (int i = 0; i < t; i++) {
+                int col = terms[i][1];
+                int pos = startPos[col];
+                transTerms[pos][0] = terms[i][1];
+                transTerms[pos][1] = terms[i][0];
+                transTerms[pos][2] = terms[i][2];
+                startPos[col]++;
+            }
+            long end = System.nanoTime();
+            total += (end - start);
+        }
+        long avg = total / 10;
+        timeLabel.setText("快速矩陣轉置10次平均執行時間: " + String.format("%,d", avg) + " ns");
+    }
+
+    // ===== 新增：原始矩陣轉置10次平均 =====
+    private void originTransposeMatrix2Avg10() {
+        if (lastMatrix2 == null) {
+            JOptionPane.showMessageDialog(this, "請先產生第二個矩陣", "錯誤", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int n = lastMatrix2.length;
+        long total = 0;
+        for (int run = 0; run < 10; run++) {
+            int[][] trans = new int[n][n];
+            long start = System.nanoTime();
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    trans[j][i] = lastMatrix2[i][j];
+                }
+            }
+            long end = System.nanoTime();
+            total += (end - start);
+        }
+        long avg = total / 10;
+        timeLabel.setText("原始矩陣轉置10次平均執行時間: " + String.format("%,d", avg) + " ns");
     }
 
     private void showResultMatrix(int[][] matrix, String title) {
