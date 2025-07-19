@@ -38,7 +38,7 @@ public class SparseMatrixGUI extends JFrame {
 
         // Message label for errors or info
         messageLabel = new JLabel(" ", SwingConstants.CENTER);
-        messageLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 16));
+        messageLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 15));
         messageLabel.setForeground(Color.RED);
         messageLabel.setPreferredSize(new Dimension(600, 30));
         add(messageLabel, BorderLayout.NORTH);
@@ -47,72 +47,102 @@ public class SparseMatrixGUI extends JFrame {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 35, 10, 35);
+        gbc.insets = new Insets(10, 10, 10, 10); // 將左右間距縮小為10
 
         // Matrix size input
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST;
-        topPanel.add(new JLabel("矩陣大小(n*n):"), gbc);
+        JLabel sizeLabel = new JLabel("矩陣大小(n*n):");
+        sizeLabel.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        topPanel.add(sizeLabel, gbc);
         sizeField = new JTextField(5);
+        sizeField.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        sizeField.setPreferredSize(new Dimension(200, 28));
         gbc.gridx = 1; gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         topPanel.add(sizeField, gbc);
 
         // Density input
         gbc.gridx = 2; gbc.anchor = GridBagConstraints.EAST;
-        topPanel.add(new JLabel("密集度百分比(0~1):"), gbc);
+        JLabel densityLabel = new JLabel("密集度百分比(0~1):");
+        densityLabel.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        topPanel.add(densityLabel, gbc);
         densityField = new JTextField("0.1", 4);
+        densityField.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        densityField.setPreferredSize(new Dimension(200, 28));
         gbc.gridx = 3; gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         topPanel.add(densityField, gbc);
 
         // Buttons on next row
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2; gbc.anchor = GridBagConstraints.CENTER;
         generateButton = new JButton("產生稀疏矩陣 No.1");
         generateButton.setPreferredSize(new Dimension(200, 28));
+        generateButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        generateButton.setForeground(new Color(255, 140, 0));
         topPanel.add(generateButton, gbc);
 
         gbc.gridx = 2; gbc.gridwidth = 2;
         generateSecondButton = new JButton("產生稀疏矩陣 No.2");
         generateSecondButton.setPreferredSize(new Dimension(200, 28));
+        generateSecondButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        generateSecondButton.setForeground(new Color(255, 140, 0));
         topPanel.add(generateSecondButton, gbc);
 
         // Show sparse matrix buttons
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         showSparseButton = new JButton("較省空間顯示稀疏矩陣 No.1");
         showSparseButton.setPreferredSize(new Dimension(200, 28));
+        showSparseButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        showSparseButton.setForeground(new Color(34, 139, 34));
         topPanel.add(showSparseButton, gbc);
 
         gbc.gridx = 2; gbc.gridwidth = 2;
         showSparseButton2 = new JButton("較省空間顯示稀疏矩陣 No.2");
         showSparseButton2.setPreferredSize(new Dimension(200, 28));
+        showSparseButton2.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        showSparseButton2.setForeground(new Color(34, 139, 34));
         topPanel.add(showSparseButton2, gbc);
 
         // 在 topPanel 下方新增加減按鈕
-        addButton = new JButton("矩陣相加 ➕");
-        subButton = new JButton("矩陣相減 ➖");
+        addButton = new JButton("矩陣相加 ＋");
+        addButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        addButton.setForeground(Color.BLUE);
+        subButton = new JButton("矩陣相減 －");
+        subButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
+        subButton.setForeground(Color.BLUE);
         gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         topPanel.add(addButton, gbc);
         gbc.gridx = 2; gbc.gridwidth = 2;
         topPanel.add(subButton, gbc);
 
         // Transpose button
-        transposeButton = new JButton("矩陣 No.2 快速矩陣轉置(Fast Transpose) 🔄");
-        transposeButton.setPreferredSize(new Dimension(300, 28));
+        transposeButton = new JButton("矩陣 No.2 快速矩陣轉置（Fast Transpose）");
+        transposeButton.setPreferredSize(new Dimension(350, 28));
+        transposeButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15)); // 改回支援中文的字體
+        transposeButton.setForeground(Color.BLUE); // 字體顏色設為藍色
         gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 4;
         topPanel.add(transposeButton, gbc);
 
         // 新增原始矩陣轉置按鈕
-        transposeOriginButton = new JButton("矩陣 No.2 原始矩陣轉置(Naive Transpose) 🔄");
-        transposeOriginButton.setPreferredSize(new Dimension(300, 28));
+        transposeOriginButton = new JButton("矩陣 No.2 原始矩陣轉置（Naive Transpose）");
+        transposeOriginButton.setPreferredSize(new Dimension(350, 28));
+        transposeOriginButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15)); // 改回支援中文的字體
+        transposeOriginButton.setForeground(Color.BLUE); // 字體顏色設為藍色
         gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 4;
         topPanel.add(transposeOriginButton, gbc);
 
         // 新增平均執行時間按鈕
         fastTransposeAvgButton = new JButton("快速矩陣轉置執行時間10次平均");
         fastTransposeAvgButton.setPreferredSize(new Dimension(300, 28));
+        fastTransposeAvgButton.setForeground(new Color(220, 20, 60)); // 字體顏色設為紅色(220,20,60)
+        fastTransposeAvgButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
         topPanel.add(fastTransposeAvgButton, gbc);
 
         originTransposeAvgButton = new JButton("原始矩陣轉置執行時間10次平均");
         originTransposeAvgButton.setPreferredSize(new Dimension(300, 28));
+        originTransposeAvgButton.setForeground(new Color(220, 20, 60)); // 字體顏色設為紅色(220,20,60)
+        originTransposeAvgButton.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 15));
         gbc.gridx = 2; gbc.gridy = 6; gbc.gridwidth = 2;
         topPanel.add(originTransposeAvgButton, gbc);
 
@@ -120,7 +150,7 @@ public class SparseMatrixGUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 4;
         gbc.insets = new Insets(30, 0, 10, 0); // 上方多留空間
         topPanel.add(Box.createVerticalStrut(20), gbc);
-        gbc.insets = new Insets(10, 35, 10, 35); // 恢復原本insets
+        gbc.insets = new Insets(10, 10, 10, 10); // 恢復原本insets
 
         add(topPanel, BorderLayout.PAGE_START);
 
@@ -198,7 +228,7 @@ public class SparseMatrixGUI extends JFrame {
         JScrollPane resultScroll = new JScrollPane(resultTextArea);
         JPanel resultPanel = new JPanel(new BorderLayout());
         JLabel resultLabel = new JLabel("運算結果", SwingConstants.CENTER);
-        resultLabel.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+        resultLabel.setFont(new Font("500", Font.BOLD, 18));
         resultLabel.setForeground(Color.BLUE); // 設定標題為藍色
         resultPanel.add(resultLabel, BorderLayout.NORTH);
         resultPanel.add(resultScroll, BorderLayout.CENTER);
@@ -468,7 +498,7 @@ public class SparseMatrixGUI extends JFrame {
     private void showTransposedMatrix() {
         if (transposedMatrix == null) return;
         StringBuilder sb = new StringBuilder();
-        sb.append("矩陣 No.2 快速矩陣轉置(Fast Transpose)結果 🔄\n");
+        sb.append("矩陣 No.2 快速矩陣轉置(Fast Transpose)結果 ⟲\n");
         for (int i = 0; i < transposedMatrix.length; i++) {
             for (int j = 0; j < transposedMatrix[i].length; j++) {
                 sb.append(transposedMatrix[i][j]).append("\t");
@@ -498,7 +528,7 @@ public class SparseMatrixGUI extends JFrame {
             }
         }
         long end = System.nanoTime();
-        showResultMatrix(trans, "矩陣 No.2 原始矩陣轉置(Naive Transpose)結果 🔄");
+        showResultMatrix(trans, "矩陣 No.2 原始矩陣轉置(Naive Transpose)結果 ⟲");
         timeLabel.setText("原始矩陣轉置執行時間: " + String.format("%,d", (end - start)) + " ns");
     }
 
