@@ -8,6 +8,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import javafx.geometry.Pos;
 
 public class MusicPlayerGUI extends Application {
     // 音樂播放器邏輯物件
@@ -111,8 +112,13 @@ public class MusicPlayerGUI extends Application {
         Label volumeLabel = new Label("音量");
         Slider volumeSlider = new Slider(0, 1, 0.5); // 初始音量 0.5
         volumeSlider.setPrefWidth(200);
-        volumeSlider.setShowTickLabels(true);
-        volumeSlider.setShowTickMarks(true);
+        volumeSlider.setShowTickLabels(false);
+        volumeSlider.setShowTickMarks(false);
+        // 音量符號
+        Label minusLabel = new Label("-");
+        Label plusLabel = new Label("+");
+        HBox volumeBox = new HBox(5, minusLabel, volumeSlider, plusLabel);
+        volumeBox.setAlignment(Pos.CENTER_LEFT);
         // 音量調整事件
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (mediaPlayer != null) {
@@ -121,9 +127,10 @@ public class MusicPlayerGUI extends Application {
         });
         // 左側控制區域
         Label progressLabel = new Label("播放進度條");
-        VBox controls = new VBox(5, addBtn, removeBtn, prevBtn, nextBtn, playBtn, pauseBtn, stopBtn, progressLabel, progressSlider, volumeLabel, volumeSlider);
+        VBox controls = new VBox(5, addBtn, removeBtn, prevBtn, nextBtn, playBtn, pauseBtn, stopBtn, progressLabel, progressSlider, volumeLabel, volumeBox);
         // 右側顯示區域
         Label playlistLabel = new Label("播放清單");
+        playlistLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 0 0 5 0;");
         VBox right = new VBox(5, currentSongLabel, playlistLabel, playlistView);
         // 主畫面
         HBox root = new HBox(15, controls, right);
