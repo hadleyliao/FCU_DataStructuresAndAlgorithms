@@ -18,13 +18,10 @@ public class MusicPlayerGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        TextField songInput = new TextField();
-        songInput.setPromptText("輸入歌曲名稱");
         Button addBtn = new Button("➕ 新增歌曲");
         Button removeBtn = new Button("➖ 刪除歌曲");
         Button prevBtn = new Button("⏮ 上一首");
         Button nextBtn = new Button("⏭ 下一首");
-        Button fileBtn = new Button("選擇檔案");
         Button playBtn = new Button("▶ 播放");
         Button pauseBtn = new Button("⏸ 暫停");
         Button stopBtn = new Button("■ 停止");
@@ -36,20 +33,8 @@ public class MusicPlayerGUI extends Application {
         progressSlider.setPrefWidth(200);
 
         addBtn.setOnAction(e -> {
-            // 只新增歌名（不推薦，建議用選檔案）
-            String title = songInput.getText().trim();
-            if (!title.isEmpty()) {
-                File fakeFile = new File(title); // 只是示意
-                if (player.addSong(fakeFile)) {
-                    updatePlaylist();
-                    songInput.clear();
-                }
-            }
-        });
-
-        fileBtn.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("選擇音樂檔案");
+            fileChooser.setTitle("新增音樂檔案");
             fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("MP3 Files", "*.mp3")
             );
@@ -62,10 +47,18 @@ public class MusicPlayerGUI extends Application {
         });
 
         removeBtn.setOnAction(e -> {
-            String title = songInput.getText().trim();
-            if (player.removeSong(title)) {
-                updatePlaylist();
-                songInput.clear();
+            int idx = playlistView.getSelectionModel().getSelectedIndex();
+            if (idx >= 0 && idx < player.getPlaylist().size()) {
+                String title = player.getPlaylist().get(idx).getName();
+                if (player.removeSong(title)) {
+                    updatePlaylist();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("刪除歌曲");
+                alert.setHeaderText(null);
+                alert.setContentText("請先在清單中選擇要刪除的歌曲。");
+                alert.showAndWait();
             }
         });
 
@@ -100,7 +93,7 @@ public class MusicPlayerGUI extends Application {
                 mediaPlayer.stop();
             }
         });
-        VBox controls = new VBox(5, fileBtn, songInput, addBtn, removeBtn, prevBtn, nextBtn, playBtn, pauseBtn, stopBtn, progressSlider);
+        VBox controls = new VBox(5, addBtn, removeBtn, prevBtn, nextBtn, playBtn, pauseBtn, stopBtn, progressSlider);
         VBox right = new VBox(10, currentSongLabel, playlistView);
         HBox root = new HBox(15, controls, right);
         root.setStyle("-fx-padding: 20;");
