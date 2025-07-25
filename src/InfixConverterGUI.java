@@ -86,12 +86,12 @@ public class InfixConverterGUI extends JFrame {
 
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
-        button.setFont(new Font("微軟正黑體", Font.BOLD, 28)); // 字體更大
+        button.setFont(new Font("微軟正黑體", Font.BOLD, 20)); // 字體更大
         button.setBackground(bgColor);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(100, 50)); // 按鈕大小調整
+        button.setPreferredSize(new Dimension(80, 50)); // 按鈕大小調整
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // 添加懸停效果
