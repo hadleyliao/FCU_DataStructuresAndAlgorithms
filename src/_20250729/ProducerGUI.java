@@ -1,3 +1,11 @@
+/********************************
+ * 課程名稱: 資料結構與演算法
+ * 對應課程: Chapter 6
+ * CourseWork2: Heap Application
+ ********************************/
+
+package _20250729;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +28,7 @@ public class ProducerGUI extends JFrame {
     public ProducerGUI() {
         setTitle("生產者範例");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(500, 600);
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel();
@@ -31,17 +39,21 @@ public class ProducerGUI extends JFrame {
         topPanel.add(startButton);
         add(topPanel, BorderLayout.NORTH);
 
+        // 將 bufferPanel 和 logArea 放入同一個 JPanel，並用 GridLayout 讓大小一致
+        JPanel upperPanel = new JPanel(new GridLayout(1, 2));
         bufferPanel = new JPanel();
         bufferPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         bufferPanel.setBorder(BorderFactory.createTitledBorder("Buffer 內容 (數據顯示)"));
-        add(bufferPanel, BorderLayout.CENTER);
+        upperPanel.add(bufferPanel);
 
         logArea = new JTextArea();
         logArea.setEditable(false);
-        add(new JScrollPane(logArea), BorderLayout.EAST);
+        upperPanel.add(new JScrollPane(logArea));
+
+        add(upperPanel, BorderLayout.CENTER);
 
         animationPanel = new FlowAnimationPanel();
-        animationPanel.setPreferredSize(new Dimension(700, 200)); // 放大動畫區域
+        animationPanel.setPreferredSize(new Dimension(700, 300)); // 動畫區塊
         add(animationPanel, BorderLayout.SOUTH);
 
         startButton.addActionListener(new ActionListener() {
