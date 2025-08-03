@@ -1,3 +1,10 @@
+/***********************************
+ * 對應課程: Chapter 3
+ * CourseWork1: 具清單功能的音樂撥放器
+ ***********************************/
+
+package _20250723;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

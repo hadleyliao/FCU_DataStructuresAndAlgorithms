@@ -1,3 +1,10 @@
+/*************************
+ * 對應課程: Chapter 4
+ * CourseWork1: 小畫家
+ **************************/
+
+package _20250724;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;

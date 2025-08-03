@@ -1,11 +1,9 @@
-/* 20250708 Homework
- * 請依上述過程, 自行建置一個可以比較在一個二維陣列上進行, 較慢, 普通, 快速的三種不同搜尋演算法的比較.
- * 再加一個功能, 讓它可以自己隨機產生一個值, 並進行搜尋, 記錄時間. 讓這個過程跑20次, 並得到不同搜尋演算法的平均搜尋時間。
- * 讓程式的標題是你的姓名學號.
- * 上傳: 程式執行截圖, 原始程式碼
- * */
+/***********************
+ * 對應課程: Chapter 1
+ * CourseWork1: 效能比較
+ ***********************/
 
-
+package _20250708;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -14,7 +12,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class D1397060 extends JFrame {
+public class MatrixSearchDemo extends JFrame {
     private JTextField inputField, searchField;
     private JButton generateButton, linearBtn, binaryBtn, hashBtn, allSearchBtn, testAvgBtn;
     private JTable originalTable, sortedTable;
@@ -27,8 +25,8 @@ public class D1397060 extends JFrame {
     private Set<Integer> hashSet;
 
 
-    public D1397060() {
-        setTitle("矩陣搜尋系統");
+    public MatrixSearchDemo() {
+        setTitle("矩陣搜尋演算法比較");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -351,6 +349,6 @@ public class D1397060 extends JFrame {
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new D1397060().setVisible(true));
+        SwingUtilities.invokeLater(() -> new MatrixSearchDemo().setVisible(true));
     }
 }

@@ -1,5 +1,10 @@
-/**
- * MusicPlayerGUI.java
+/***********************************
+ * 對應課程: Chapter 3
+ * CourseWork1: 具清單功能的音樂撥放器
+ ***********************************/
+
+package _20250723; /**
+ * _20250723.MusicPlayerGUI.java
  *
  * 本程式為 JavaFX 製作的簡易音樂播放器 GUI。
  * 功能包含：
@@ -10,7 +15,7 @@
  *  讓電腦安裝 JavaFX SDK，並在 IDE 設定好 library 路徑和 VM options。
  *  或者改寫程式為 Swing 或純 Java 版本（不依賴 JavaFX），這樣只要有 JDK 就能執行。
  *
- * 需搭配 MusicPlayer.java 使用，並需在執行環境中安裝 JavaFX SDK。
+ * 需搭配 _20250723.MusicPlayer.java 使用，並需在執行環境中安裝 JavaFX SDK。
  */
 
 import javafx.application.Application;

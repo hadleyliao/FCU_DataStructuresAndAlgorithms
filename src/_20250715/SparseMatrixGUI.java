@@ -1,8 +1,13 @@
+/****************************************************
+ * 對應課程: Chapter 2
+ * CourseWork2: 矩陣生成, 矩陣轉置, 矩陣加法, 效能評估程式
+ ****************************************************/
+
+package _20250715;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class SparseMatrixGUI extends JFrame {
