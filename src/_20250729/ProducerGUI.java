@@ -257,11 +257,12 @@ public class ProducerGUI extends JFrame {
         }
 
         public void animateConsume(String item) {
+            // 第一段：緩衝區到消費者，沿箭頭方向
             animatingItem = item;
             animatingLabel = item.substring(item.length() - 3);
-            animX = 380;
+            animX = 380; // 緩衝區
             animY = 70;
-            targetX = 630;
+            targetX = 630; // 消費者
             isProducing = false;
             alpha = 0.3f;
             scale = 11;
@@ -377,8 +378,13 @@ public class ProducerGUI extends JFrame {
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(alpha, 1.0f)));
                 g2.setColor(isProducing ? new Color(48,196,113,180) : new Color(244,67,54,180));
                 g2.fillOval(animX, animY, scale + 22, scale + 22);
+                // 加粗白色描邊
+                g2.setStroke(new BasicStroke(3));
                 g2.setColor(Color.WHITE);
-                g2.setFont(new Font("Consolas", Font.BOLD, 12));
+                g2.drawOval(animX, animY, scale + 22, scale + 22);
+                // 黑色大字
+                g2.setFont(new Font("Consolas", Font.BOLD, 18));
+                g2.setColor(Color.BLACK);
                 g2.drawString(animatingLabel, animX + 8, animY + 22);
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
             }
@@ -496,7 +502,6 @@ public class ProducerGUI extends JFrame {
                                 } catch (NumberFormatException ignored) {}
                             }
                         }
-                        if (minItem != null) buffer.remove(minItem);
                     }
                     if (minItem != null) {
                         final String consumed = minItem;
@@ -506,6 +511,13 @@ public class ProducerGUI extends JFrame {
                         });
                         updateBufferPanel(consumed, false);
                         animateConsume(consumed);
+                        // 等待動畫結束後再移除資料
+                        Thread.sleep(animationDelay + 80); // 動畫時間
+                        synchronized (buffer) {
+                            buffer.remove(consumed);
+                        }
+                        updateBufferPanel(consumed, false);
+                        animationPanel.updateBufferSnapshot();
                     }
                     Thread.sleep(consumeDelay);
                 } catch (InterruptedException e) { break; }
