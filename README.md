@@ -2,7 +2,7 @@
 
 本專案為逢甲大學資料結構與演算法課程相關的 Java 練習與作業彙整。
 
-## 章節內容
+## 課程內容
 
 - 第1章 資料結構導論（Introduction）
 - 第2章 陣列與矩陣（Arrays and Matrices）
@@ -17,10 +17,11 @@
 ## 專案結構
 
 - `src/`：所有 Java 原始碼、HTML、CSS、JS 檔案
-    - `_20250701.GCDLCMCalculator.java`：最大公因數/最小公倍數計算器
-    - `_20250701.ImageViewer.java`：簡易圖片瀏覽器
-    - `index.html`、`index2.html`、`pomodoro.html`：網頁介面範例、番茄鐘工具
-    - `script.js`、`style.css`：網頁腳本與樣式
+    - `_20250701/`
+        - `GCDLCMCalculator.java`：最大公因數/最小公倍數計算器
+        - `ImageViewer.java`：簡易圖片瀏覽器
+        - `index.html`、`index2.html`、`pomodoro.html`：網頁介面範例、番茄鐘工具
+        - `script.js`、`style.css`：網頁腳本與樣式
     - `_20250708/`
         - `MatrixSearchDemo.java`：矩陣搜尋演算法比較
     - `_20250714/`
@@ -50,4 +51,3 @@
 1. 使用 IntelliJ IDEA 或其他支援 Java 的 IDE 開啟本專案。
 2. 進入 `src/` 目錄，選擇欲執行的 Java 檔案，執行主方法（`main`）。
 3. 部分 HTML/JS/CSS 檔案可直接以瀏覽器開啟。
-
