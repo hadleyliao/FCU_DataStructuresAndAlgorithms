@@ -33,7 +33,6 @@ public class ProducerGUI extends JFrame {
         setTitle("Producer-Consumer Visualizer");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1000, 650); // 直接設定視窗大小
-        setResizable(false); // 禁止調整大小
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
         getContentPane().setBackground(Color.WHITE);
@@ -164,7 +163,7 @@ public class ProducerGUI extends JFrame {
             bufferSizeField.setEnabled(true);
             startButton.setEnabled(true);
             startButton.setText("開始");
-            if (animationPanel != null) animationPanel.updateBufferSnapshot();
+            if (animationPanel != null) animationPanel.updateBufferSnapshot(); // 保證重設時動畫緩衝區也清空
         });
     }
 
@@ -385,27 +384,24 @@ public class ProducerGUI extends JFrame {
             }
 
             // 繪製 buffer 內容 (在 Buffer 區塊內)
-            int bx = bufferX + 20, by = blockY + 85, bw = 45, bh = 28, 修gap = 8;
+            int bx = bufferX + 20, by = blockY + 85, bw = 45, bh = 28;
             int maxItemsPerRow = 5;
-
+            int gapBuffer = 8; // 避免與上方 gap 變數重名
             for (int i = 0; i < bufferSnapshot.size(); i++) {
                 String item = bufferSnapshot.get(i);
                 String label = item.length() > 3 ? item.substring(item.length()-3) : item;
-
                 int row = i / maxItemsPerRow;
                 int col = i % maxItemsPerRow;
-                int x = bx + col * (bw + gap);
-                int y = by + row * (bh + gap);
+                int x = bx + col * (bw + gapBuffer);
+                int y = by + row * (bh + gapBuffer);
 
-                // 確保不超出區塊邊界
-                if (x + bw <= bufferX + blockWidth - 20) {
-                    g2.setColor(new Color(240, 248, 255));
-                    g2.fillRoundRect(x, y, bw, bh, 4, 4);
-                    g2.setColor(new Color(0, 122, 255));
-                    g2.drawRoundRect(x, y, bw, bh, 4, 4);
-                    g2.setFont(new Font("Consolas", Font.BOLD, 9));
-                    g2.drawString(label, x + 8, y + 14);
-                }
+                // 直接繪製，不再判斷 x + bw 是否超出區塊
+                g2.setColor(new Color(240, 248, 255));
+                g2.fillRoundRect(x, y, bw, bh, 4, 4);
+                g2.setColor(new Color(0, 122, 255));
+                g2.drawRoundRect(x, y, bw, bh, 4, 4);
+                g2.setFont(new Font("Consolas", Font.BOLD, 9));
+                g2.drawString(label, x + 8, y + 14);
             }
         }
     }
@@ -413,7 +409,6 @@ public class ProducerGUI extends JFrame {
     private void updateBufferPanel(String highlightItem, boolean isProduced) {
         SwingUtilities.invokeLater(() -> {
             bufferPanel.removeAll();
-            // BufferPanel每3個一row，第4個換一排
             bufferPanel.setLayout(new GridLayout(0, 3, 6, 8));
             for (String item : buffer) {
                 JLabel label = new JLabel(item, SwingConstants.CENTER);
@@ -431,7 +426,7 @@ public class ProducerGUI extends JFrame {
             }
             bufferPanel.revalidate();
             bufferPanel.repaint();
-            if (animationPanel != null) animationPanel.updateBufferSnapshot();
+            if (animationPanel != null) animationPanel.updateBufferSnapshot(); // 保證每次更新都同步動畫緩衝區
         });
     }
 
