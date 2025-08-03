@@ -24,6 +24,8 @@ public class ProducerGUI extends JFrame {
     private ProducerThread producerThread;
     private ConsumerThread consumerThread;
     private FlowAnimationPanel animationPanel;
+    private JSlider speedSlider;
+    private int animationDelay = 10; // 動畫延遲(毫秒)
 
     public ProducerGUI() {
         setTitle("生產者範例");
@@ -32,11 +34,26 @@ public class ProducerGUI extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         topPanel.add(new JLabel("Buffer 大小: "));
         bufferSizeField = new JTextField("5", 5);
         topPanel.add(bufferSizeField);
         startButton = new JButton("開始生產");
         topPanel.add(startButton);
+        // 新增速度調整拉桿，放在 topPanel 左側
+        speedSlider = new JSlider(10, 200, 30); // 10~200ms, 預設30ms
+        speedSlider.setMajorTickSpacing(30);
+        speedSlider.setMinorTickSpacing(10);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setPaintLabels(true);
+        speedSlider.setBorder(BorderFactory.createTitledBorder("動畫速度 (數值越小越快)"));
+        speedSlider.addChangeListener(e -> {
+            animationDelay = speedSlider.getValue();
+            if (animationPanel != null) {
+                animationPanel.updateAnimationDelay(animationDelay);
+            }
+        });
+        topPanel.add(speedSlider, 0); // 插入最左邊
         add(topPanel, BorderLayout.NORTH);
 
         // 將 bufferPanel 和 logArea 放入同一個 JPanel，並用 GridLayout 讓大小一致
@@ -188,6 +205,9 @@ public class ProducerGUI extends JFrame {
         private int targetX = 0;
         private boolean isProducing = true;
         private Timer timer;
+        private String animatingLabel = null;
+        private float alpha = 1.0f; // 透明度
+        private int scale = 30; // 物品大小
 
         public FlowAnimationPanel() {
             setBackground(Color.WHITE);
@@ -195,41 +215,43 @@ public class ProducerGUI extends JFrame {
 
         public void animateProduce(String item) {
             animatingItem = item;
-            animX = 40; // 生產者區塊右側
+            animatingLabel = item.substring(item.length() - 3); // 顯示編號末3碼
+            animX = 40;
             animY = 60;
-            targetX = 220; // buffer 區塊左側
+            targetX = 220;
             isProducing = true;
+            alpha = 0.2f;
+            scale = 10;
             startAnimation();
         }
         public void animateConsume(String item) {
             animatingItem = item;
-            animX = 220; // buffer 區塊右側
+            animatingLabel = item.substring(item.length() - 3);
+            animX = 220;
             animY = 60;
-            targetX = 400; // 消費者區塊左側
+            targetX = 400;
             isProducing = false;
+            alpha = 0.2f;
+            scale = 10;
             startAnimation();
+        }
+        public void updateAnimationDelay(int delay) {
+            if (timer != null && timer.isRunning()) {
+                timer.setDelay(delay);
+            }
         }
         private void startAnimation() {
             if (timer != null && timer.isRunning()) timer.stop();
-            timer = new Timer(10, e -> {
-                if (isProducing) {
-                    if (animX < targetX) {
-                        animX += 5;
-                        repaint();
-                    } else {
-                        ((Timer)e.getSource()).stop();
-                        animatingItem = null;
-                        repaint();
-                    }
+            timer = new Timer(animationDelay, e -> {
+                if (animX < targetX) {
+                    animX += 5;
+                    if (alpha < 1.0f) alpha += 0.08f;
+                    if (scale < 30) scale += 2;
+                    repaint();
                 } else {
-                    if (animX < targetX) {
-                        animX += 5;
-                        repaint();
-                    } else {
-                        ((Timer)e.getSource()).stop();
-                        animatingItem = null;
-                        repaint();
-                    }
+                    ((Timer)e.getSource()).stop();
+                    animatingItem = null;
+                    repaint();
                 }
             });
             timer.start();
@@ -237,30 +259,41 @@ public class ProducerGUI extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D)g;
             // 畫三個區塊
-            g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(10, 40, 60, 40); // 生產者
-            g.fillRect(190, 40, 60, 40); // buffer
-            g.fillRect(370, 40, 60, 40); // 消費者
-            g.setColor(Color.BLACK);
-            g.drawRect(10, 40, 60, 40);
-            g.drawRect(190, 40, 60, 40);
-            g.drawRect(370, 40, 60, 40);
-            g.drawString("生產者", 20, 35);
-            g.drawString("Buffer", 200, 35);
-            g.drawString("消費者", 380, 35);
+            g2.setColor(Color.LIGHT_GRAY);
+            g2.fillRect(10, 40, 60, 40); // 生產者
+            g2.fillRect(190, 40, 60, 40); // buffer
+            g2.fillRect(370, 40, 60, 40); // 消費者
+            g2.setColor(Color.BLACK);
+            g2.drawRect(10, 40, 60, 40);
+            g2.drawRect(190, 40, 60, 40);
+            g2.drawRect(370, 40, 60, 40);
+            g2.drawString("生產者", 20, 35);
+            g2.drawString("Buffer", 200, 35);
+            g2.drawString("消費者", 380, 35);
             // 畫箭頭
-            g.drawLine(70, 60, 190, 60);
-            g.drawLine(250, 60, 370, 60);
-            g.drawLine(185, 60, 190, 60); // buffer左
-            g.drawLine(250, 60, 255, 60); // buffer右
+            g2.setStroke(new BasicStroke(2));
+            g2.setColor(new Color(80, 160, 255));
+            g2.drawLine(70, 60, 190, 60);
+            g2.setColor(new Color(255, 120, 120));
+            g2.drawLine(250, 60, 370, 60);
+            g2.setColor(Color.GRAY);
+            g2.drawLine(185, 60, 190, 60);
+            g2.drawLine(250, 60, 255, 60);
             // 畫動畫物品
             if (animatingItem != null) {
-                g.setColor(isProducing ? Color.YELLOW : Color.PINK);
-                g.fillOval(animX, animY, 30, 30);
-                g.setColor(Color.BLACK);
-                g.drawOval(animX, animY, 30, 30);
-                g.drawString("物品", animX + 5, animY + 20);
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(alpha, 1.0f)));
+                GradientPaint gp = new GradientPaint(animX, animY, isProducing ? Color.YELLOW : Color.PINK, animX+scale, animY+scale, Color.WHITE);
+                g2.setPaint(gp);
+                g2.fillOval(animX, animY, scale, scale);
+                g2.setColor(Color.DARK_GRAY);
+                g2.setStroke(new BasicStroke(2));
+                g2.drawOval(animX, animY, scale, scale);
+                g2.setFont(new Font("Arial", Font.BOLD, 14));
+                g2.setColor(Color.BLACK);
+                if (animatingLabel != null)
+                    g2.drawString(animatingLabel, animX + scale/4, animY + scale/2 + 4);
             }
         }
     }
