@@ -1,6 +1,6 @@
 /*************************
  * 對應課程: Chapter 4
- * CourseWork1: 小畫家
+ * CourseWork1: 小畫家1
  **************************/
 
 package _20250724;
@@ -216,6 +216,73 @@ public class SimplePaint extends JFrame {
             }
         });
         actionSection.add(clearBtn);
+
+        // 新建按鈕
+        JButton newBtn = createStyledButton("🆕 新建", "建立新畫布");
+        newBtn.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(
+                    this,
+                    "確定要新建畫布嗎？未儲存的內容將遺失！",
+                    "新建畫布",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+            if (result == JOptionPane.YES_OPTION) {
+                clearCanvas();
+            }
+        });
+        actionSection.add(newBtn);
+
+        // 儲存按鈕
+        JButton saveBtn = createStyledButton("💾 儲存", "儲存畫布到檔案");
+        saveBtn.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("儲存畫布");
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                try {
+                    java.io.File fileToSave = fileChooser.getSelectedFile();
+                    if (!fileToSave.getName().toLowerCase().endsWith(".png")) {
+                        fileToSave = new java.io.File(fileToSave.getAbsolutePath() + ".png");
+                    }
+                    javax.imageio.ImageIO.write(canvasImage, "png", fileToSave);
+                    JOptionPane.showMessageDialog(this, "儲存成功！", "訊息", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "儲存失敗: " + ex.getMessage(), "錯誤", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        actionSection.add(saveBtn);
+
+        // 開啟按鈕
+        JButton openBtn = createStyledButton("📂 開啟", "開啟 PNG 檔案");
+        openBtn.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("開啟畫布");
+            int userSelection = fileChooser.showOpenDialog(this);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                try {
+                    java.io.File fileToOpen = fileChooser.getSelectedFile();
+                    BufferedImage loadedImg = javax.imageio.ImageIO.read(fileToOpen);
+                    if (loadedImg != null) {
+                        canvasImage = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g2 = canvasImage.createGraphics();
+                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        g2.setColor(Color.WHITE);
+                        g2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                        g2.drawImage(loadedImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, null);
+                        g2.dispose();
+                        repaint();
+                        saveToUndo();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "檔案格式錯誤或無法開啟！", "錯誤", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "開啟失敗: " + ex.getMessage(), "錯誤", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        actionSection.add(openBtn);
 
         return actionSection;
     }
