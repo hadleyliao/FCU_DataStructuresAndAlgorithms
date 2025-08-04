@@ -1,6 +1,6 @@
 /*****************************
  * 對應課程: Chapter 5
- * CourseWork2: 模擬顧客點餐系統
+ * CourseWork: 模擬顧客點餐系統
  *****************************/
 
 package _20250728;
@@ -247,7 +247,7 @@ public class RestaurantSimulation extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            RestaurantSimulation simulation = new RestaurantSimulation();
+            RestaurantSimulation7 simulation = new RestaurantSimulation7();
             simulation.setVisible(true);
         });
     }
