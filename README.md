@@ -35,7 +35,8 @@
         - `MusicPlayerGUI.java`：簡易音樂播放器（圖形介面）
     - `_20250724/`
         - `InfixConverterGUI.java`：中序轉後序運算式工具
-        - `SimplePaint.java`：簡易繪圖板
+        - `SimplePaint.java`：簡易小畫家1
+        - `DrawingApp`：簡易小畫家2
     - `_20250729/`
         - `ArrayBinaryTreeGUI.java`：陣列實作二元樹操作
         - `ProducerGUI.java`：生產者消費者問題模擬
