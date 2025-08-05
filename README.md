@@ -40,6 +40,10 @@
     - `_20250729/`
         - `ArrayBinaryTreeGUI.java`：陣列實作二元樹操作
         - `ProducerGUI.java`：生產者消費者問題模擬
+    - `_20250805/`
+        - `GraphDemoGUI.java`：圖形結構操作與展示（圖形介面）
+        - `GraphGenerator.java`：圖形結構產生器
+        - `GraphGUI.java`：圖形結構互動介面
 
 - 主要功能包含：
     - 演算法比較（如矩陣搜尋、階乘運算）
