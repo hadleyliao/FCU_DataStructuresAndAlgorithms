@@ -44,6 +44,12 @@
         - `GraphDemoGUI.java`：圖形結構操作與展示（圖形介面）
         - `GraphGenerator.java`：圖形結構產生器
         - `GraphGUI.java`：圖形結構互動介面
+    - `_20250811/`
+        - `ArticulationPointComparison.java`：關節點（割點）演算法效能比較
+        - `articulation_point_result.csv`：關節點演算法效能比較結果（CSV）
+        - `關節點演算法效能比較.pptx`：關節點演算法效能比較簡報
+    - `_20250812/`
+        - `GraphGeneratorGUI.java`：圖形結構產生器（圖形介面）最短路徑。Dijkstra 演算法、Floyd-Warshall 演算法
 
 - 主要功能包含：
     - 演算法比較（如矩陣搜尋、階乘運算）
