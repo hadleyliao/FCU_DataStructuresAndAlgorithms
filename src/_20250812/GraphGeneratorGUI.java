@@ -90,7 +90,7 @@ public class GraphGeneratorGUI extends JFrame {
         controlPanel.add(new JLabel("節點數量:"));
         nodeSpinner = new JSpinner(new SpinnerNumberModel(5, 2, 1000, 1));
         nodeSpinner.setEditor(new JSpinner.NumberEditor(nodeSpinner, "#"));
-        nodeSpinner.setValue(5);
+        nodeSpinner.setValue(Integer.valueOf(5));
         ((JSpinner.DefaultEditor) nodeSpinner.getEditor()).getTextField().setEditable(true);
         nodeSpinner.addChangeListener(e -> {
             try {
@@ -105,7 +105,7 @@ public class GraphGeneratorGUI extends JFrame {
         controlPanel.add(new JLabel("邊的數量:"));
         edgeSpinner = new JSpinner(new SpinnerNumberModel(7, 1, 100000, 1));
         edgeSpinner.setEditor(new JSpinner.NumberEditor(edgeSpinner, "#"));
-        edgeSpinner.setValue(7);
+        edgeSpinner.setValue(Integer.valueOf(7));
         ((JSpinner.DefaultEditor) edgeSpinner.getEditor()).getTextField().setEditable(true);
         edgeSpinner.addChangeListener(e -> {
             try {
@@ -202,18 +202,18 @@ public class GraphGeneratorGUI extends JFrame {
         if (numNodes < 2) {
             JOptionPane.showMessageDialog(this, "節點數量必須大於等於2！", "輸入錯誤", JOptionPane.ERROR_MESSAGE);
             numNodes = 2;
-            nodeSpinner.setValue(2);
+            nodeSpinner.setValue(Integer.valueOf(2));
         }
         int maxEdges = (numNodes * (numNodes - 1)) / 2;
         if (numEdges < numNodes - 1 || numEdges > maxEdges) {
             JOptionPane.showMessageDialog(this, "邊的數量必須介於 " + (numNodes - 1) + " 和 " + maxEdges + " 之間！", "輸入錯誤", JOptionPane.ERROR_MESSAGE);
             numEdges = Math.max(numNodes - 1, 1);
-            edgeSpinner.setValue(numEdges);
+            edgeSpinner.setValue(Integer.valueOf(numEdges));
         }
 
         Random random = new Random();
-        int width = graphPanel.getWidth() > 0 ? graphPanel.getWidth() : 600;
-        int height = graphPanel.getHeight() > 0 ? graphPanel.getHeight() : 400;
+        int width = 550;
+        int height = 350;
         int margin = 50;
 
         // 生成節點
@@ -236,9 +236,9 @@ public class GraphGeneratorGUI extends JFrame {
         // 最小生成樹確保連通性
         Set<Integer> connected = new HashSet<>();
         Set<Integer> remaining = new HashSet<>();
-        connected.add(0);
+        connected.add(Integer.valueOf(0));
         for (int i = 1; i < numNodes; i++) {
-            remaining.add(i);
+            remaining.add(Integer.valueOf(i));
         }
 
         while (!remaining.isEmpty()) {
@@ -260,8 +260,8 @@ public class GraphGeneratorGUI extends JFrame {
                 String key = Math.min(bestConnection.from, bestConnection.to) + "-" +
                         Math.max(bestConnection.from, bestConnection.to);
                 usedConnections.add(key);
-                connected.add(bestConnection.to);
-                remaining.remove(bestConnection.to);
+                connected.add(Integer.valueOf(bestConnection.to));
+                remaining.remove(Integer.valueOf(bestConnection.to));
             }
         }
 
@@ -336,7 +336,7 @@ public class GraphGeneratorGUI extends JFrame {
                 if (adjacencyMatrix[i][j] == Double.POSITIVE_INFINITY) {
                     sb.append("      ∞ ");
                 } else {
-                    sb.append(String.format("%8.0f", adjacencyMatrix[i][j]));
+                    sb.append(String.format("%8.0f", Double.valueOf(adjacencyMatrix[i][j])));
                 }
             }
             sb.append("\n");
@@ -401,7 +401,7 @@ public class GraphGeneratorGUI extends JFrame {
             if (shortestPaths.distances[i] == Double.POSITIVE_INFINITY) {
                 sb.append("不可達\n");
             } else {
-                sb.append(String.format("%.0f", shortestPaths.distances[i]));
+                sb.append(String.format("%.0f", Double.valueOf(shortestPaths.distances[i])));
 
                 // 重構路徑
                 java.util.List<Integer> path = reconstructPath(shortestPaths.previous, selectedStartNode, i);
@@ -426,7 +426,7 @@ public class GraphGeneratorGUI extends JFrame {
         int current = end;
 
         while (current != -1) {
-            path.add(0, current);
+            path.add(0, Integer.valueOf(current));
             current = previous[current];
         }
 
@@ -471,7 +471,7 @@ public class GraphGeneratorGUI extends JFrame {
                 if (distanceMatrix[i][j] == Double.POSITIVE_INFINITY) {
                     sb.append("      ∞ ");
                 } else {
-                    sb.append(String.format("%8.0f", distanceMatrix[i][j]));
+                    sb.append(String.format("%8.0f", Double.valueOf(distanceMatrix[i][j])));
                 }
             }
             sb.append("\n");
