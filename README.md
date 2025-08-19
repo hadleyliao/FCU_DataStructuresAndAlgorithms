@@ -50,7 +50,11 @@
         - `關節點演算法效能比較.pptx`：關節點演算法效能比較ppt
     - `_20250812/`
         - `GraphGeneratorGUI.java`：圖形結構產生器（圖形介面）最短路徑。Dijkstra 演算法、Floyd-Warshall 演算法
-
+    - `_20250818/`
+        - `StockDataGenerator.java`：隨機股票資料產生器
+        - `StockRankingGUI.java`：股票漲跌幅排行圖形介面
+        - `stock_data.csv`：範例股票資料（CSV）
+          
 - 主要功能包含：
     - 演算法比較（如矩陣搜尋、階乘運算）
     - 資料結構操作（如二元樹、稀疏矩陣）
