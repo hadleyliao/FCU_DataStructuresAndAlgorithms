@@ -19,8 +19,8 @@
 - `src/`：所有 Java 原始碼、HTML、CSS、JS 檔案
     - `_20250701/`
         - `GCDLCMCalculator.java`：最大公因數/最小公倍數計算器
-        - `ImageViewer.java`：簡易圖片瀏覽器
-        - `index.html`、`index2.html`、`pomodoro.html`：網頁介面範例、番茄鐘工具
+        - `ImageViewer.java`：網頁介面簡易圖片瀏覽器
+        - `index.html`、`index2.html`、`pomodoro.html`：網頁介面番茄鐘工具
         - `script.js`、`style.css`：網頁腳本與樣式
     - `_20250708/`
         - `MatrixSearchDemo.java`：矩陣搜尋演算法比較
