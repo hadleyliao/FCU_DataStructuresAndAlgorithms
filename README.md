@@ -54,6 +54,10 @@
         - `StockDataGenerator.java`：隨機股票資料產生器
         - `StockRankingGUI.java`：股票漲跌幅排行圖形介面
         - `stock_data.csv`：範例股票資料（CSV）
+    - `_20250828/`
+        - `ItemTransactionDataGenerator.java`：隨機產生物品交易資料（可產生100萬筆資料，含交易代碼、日期、客戶代碼、物品名稱、價格）
+        - `item_transactions.csv`：隨機產生的物品交易資料（CSV）
+        - `SearchPerformanceComparison.java`：線性搜尋、二分搜尋、插補搜尋、雜湊搜尋效能比較（含GUI與統計分析）
           
 - 主要功能包含：
     - 演算法比較（如矩陣搜尋、階乘運算）
