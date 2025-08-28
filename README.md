@@ -36,7 +36,9 @@
     - `_20250724/`
         - `InfixConverterGUI.java`：中序轉後序運算式工具
         - `SimplePaint.java`：簡易小畫家1
-        - `DrawingApp`：簡易小畫家2
+        - `DrawingApp.java`：簡易小畫家2
+    - `_20250728/`
+        - `RestaurantSimulation.java` ~ `RestaurantSimulation7.java`：餐廳點餐、排隊、出餐等流程模擬（多版本）
     - `_20250729/`
         - `ArrayBinaryTreeGUI.java`：陣列實作二元樹操作
         - `ProducerGUI.java`：生產者消費者問題模擬
@@ -55,9 +57,16 @@
         - `StockRankingGUI.java`：股票漲跌幅排行圖形介面
         - `stock_data.csv`：範例股票資料（CSV）
     - `_20250828/`
-        - `ItemTransactionDataGenerator.java`：隨機產生物品交易資料（可產生100萬筆資料，含交易代碼、日期、客戶代碼、物品名稱、價格）
-        - `item_transactions.csv`：隨機產生的物品交易資料（CSV）
-        - `SearchPerformanceComparison.java`：線性搜尋、二分搜尋、插補搜尋、雜湊搜尋效能比較（含GUI與統計分析）
+        - `coursework1/`
+            - `ItemTransactionDataGenerator.java`：隨機產生大量物品交易資料（含交易代碼、日期、客戶代碼、物品名稱、價格）
+            - `item_transactions.csv`：由程式產生的範例交易資料（CSV 格式）
+            - `SearchPerformanceComparison.java`：線性搜尋、二分搜尋、插補搜尋、雜湊搜尋等方法效能比較（含 GUI 與統計分析）
+        - `coursework2/`
+            - `TradeRecord.java`：單筆交易資料類別
+            - `TradeDataManager.java`：股票逐筆交易資料的載入、管理與查詢
+            - `TradeDataGUI.java`：股票逐筆交易資料的圖形化查詢介面
+            - `2317-Minute-Trade.csv`、`2330-Minute-Trade.csv`、`2382-Minute-Trade.csv`：三檔股票逐筆交易資料（CSV 格式）
+            - `prompt.md`：作業說明文件
           
 - 主要功能包含：
     - 演算法比較（如矩陣搜尋、階乘運算）

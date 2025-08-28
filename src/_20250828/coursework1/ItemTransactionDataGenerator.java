@@ -1,4 +1,4 @@
-package _20250828;
+package _20250828.coursework1;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
